@@ -71,13 +71,14 @@ usage: $0 [options]
 Installs __NAME__ __VERSION__
 
 -b           run install in batch mode (without manual intervention),
+#if has_license
              it is expected the license terms are agreed upon
+#endif
 -f           no error if install prefix already exists
 -h           print this help message and exit
 -p PREFIX    install prefix, defaults to $PREFIX, must not contain spaces.
 -s           skip running pre/post-link/install scripts
 -u           update an existing installation
--t           run package tests after installation (may install conda-build)
 "
 
 if which getopt > /dev/null 2>&1; then
@@ -116,10 +117,10 @@ if which getopt > /dev/null 2>&1; then
                 FORCE=1
                 shift
                 ;;
-            -t)
-                TEST=1
-                shift
-                ;;
+#            -t)
+#                TEST=1
+#                shift
+#                ;;
             --)
                 shift
                 break
@@ -517,37 +518,37 @@ if [ "$BATCH" = "0" ]; then
     DEFAULT=no
 #endif
 
-    printf "Do you wish the installer to initialize __NAME__\\n"
-    printf "by running conda init? [yes|no]\\n"
-    printf "[%s] >>> " "$DEFAULT"
-    read -r ans
-    if [ "$ans" = "" ]; then
-        ans=$DEFAULT
-    fi
-    if [ "$ans" != "yes" ] && [ "$ans" != "Yes" ] && [ "$ans" != "YES" ] && \
-       [ "$ans" != "y" ]   && [ "$ans" != "Y" ]
-    then
-        printf "\\n"
-        printf "You have chosen to not have conda modify your shell scripts at all.\\n"
-        printf "To activate conda's base environment in your current shell session:\\n"
-        printf "\\n"
-        printf "eval \"\$($PREFIX/bin/conda shell.YOUR_SHELL_NAME hook)\" \\n"
-        printf "\\n"
-        printf "To install conda's shell functions for easier access, first activate, then:\\n"
-        printf "\\n"
-        printf "conda init\\n"
-        printf "\\n"
-    else
-        case $SHELL in
-            *zsh) $PREFIX/bin/conda init zsh ;;
-            *) $PREFIX/bin/conda init ;;
-        esac
-    fi
-    printf "If you'd prefer that conda's base environment not be activated on startup, \\n"
-    printf "   set the auto_activate_base parameter to false: \\n"
-    printf "\\n"
-    printf "conda config --set auto_activate_base false\\n"
-    printf "\\n"
+#    printf "Do you wish the installer to initialize __NAME__\\n"
+#    printf "by running conda init? [yes|no]\\n"
+#    printf "[%s] >>> " "$DEFAULT"
+#    read -r ans
+#    if [ "$ans" = "" ]; then
+#        ans=$DEFAULT
+#    fi
+#    if [ "$ans" != "yes" ] && [ "$ans" != "Yes" ] && [ "$ans" != "YES" ] && \
+#       [ "$ans" != "y" ]   && [ "$ans" != "Y" ]
+#    then
+#        printf "\\n"
+#        printf "You have chosen to not have conda modify your shell scripts at all.\\n"
+#        printf "To activate conda's base environment in your current shell session:\\n"
+#        printf "\\n"
+#        printf "eval \"\$($PREFIX/bin/conda shell.YOUR_SHELL_NAME hook)\" \\n"
+#        printf "\\n"
+#        printf "To install conda's shell functions for easier access, first activate, then:\\n"
+#        printf "\\n"
+#        printf "conda init\\n"
+#        printf "\\n"
+#    else
+#        case $SHELL in
+#            *zsh) $PREFIX/bin/conda init zsh ;;
+#            *) $PREFIX/bin/conda init ;;
+#        esac
+#    fi
+#    printf "If you'd prefer that conda's base environment not be activated on startup, \\n"
+#    printf "   set the auto_activate_base parameter to false: \\n"
+#    printf "\\n"
+#    printf "conda config --set auto_activate_base false\\n"
+#    printf "\\n"
 
     printf "Thank you for installing __NAME__!\\n"
 fi # !BATCH
