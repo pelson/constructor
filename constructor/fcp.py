@@ -255,17 +255,16 @@ def _main(name, version, download_dir, platform, channel_urls=(), channels_remap
         (x['src'] for x in channels_remap),
     ))
 
-    if environment_file or environment:
-        # set conda to be the user's conda (what is in the environment)
-        # for purposese of getting & building environements, rather
-        # than the standalone conda (conda_exe). Fallback to the
-        # standalone, if needed
-        user_conda = os.environ.get('CONDA_EXE', '')
-        if not user_conda:
-            if cc_platform == platform:
-                conda_exe
-            else:
-                sys.exit("CONDA_EXE env variable is empty. Need to activate a conda env.")
+    # set conda to be the user's conda (what is in the environment)
+    # for purpose of getting & building environments, rather
+    # than the standalone conda (conda_exe). Fallback to the
+    # standalone, if needed
+    user_conda = os.environ.get('CONDA_EXE', '')
+    if not user_conda:
+        if cc_platform == platform:
+            user_conda = conda_exe
+        else:
+            sys.exit("CONDA_EXE env variable is empty. Need to activate a conda env.")
 
     # make the environment, if needed
     if environment_file:
